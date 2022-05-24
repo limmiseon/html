@@ -1,0 +1,281 @@
+<html>
+<head>
+	<meta charset="utf-8" />
+<style> <!-- 웹 글씨체 설정 -->
+	@font-face{
+		font-family:'D2Coding';
+		src: local('D2Coding'),
+			url('D2Coding.eot'),
+			url('D2Coding.woff') format('woff'),
+			url('D2Coding.ttf') format('truetype');
+	}
+
+	body {
+		font-family:'D2Coding';
+	}
+ </style>
+<script language="JavaScript">
+var itemName = new Array("바나나 우유", "몽쉘", "건포도", "오렌지주스", "초코에몽", "피코크 들깨미역국500g", "남양 맛있는우유 GT 저지방", "녹차원 흑당시럽 10입",
+	"진라면소컵(매)65*6", "케라시스 앰플 트리트먼트", "푸르밀 미숫가루 우유", "자일로스갈색설탕500g", "CJ 비비고칩 20G", "피코크 들깨미역국 500g", "흑원당 말차 밀크티",
+	"1+ 등급란 10개입 특", "동원양반볶음김치기획", "해피홈 SAFE365 핸드크림", "(G)LH원형유리화병 10개입", "상투과자E", "더블링 나일론 깡 롤 브러쉬",
+	"농심 신라면120*5", "(대)국내산삼겹살찌개", "오뚜기 진비빔면 156g", "GAP 죽장사과 4-6입/봉", "순 유기농 바나나(봉)", "피코크 탄두리 닭가슴살", "(달콤)순살닭강정(g)",
+	"DZ주니어양말3족C_BK", "프리미엄생연어초밥", "로얄허니브레드", "아일랜드드레싱535g");
+var price = new Array(15000000, 3000, 3300, 1500, 1300, 4480, 4980, 3210, 6950, 2980, 1990, 1980, 3980, 4480, 3480, 7980, 7500, 6900, 5980, 3300, 5500, 3380, 6610,
+	2750, 10800, 4980, 2480, 7920, 4980, 7130, 4500, 1950);
+var amount = new Array(2, 4, 1, 1, 10, 5, 3, 2, 1, 1, 4, 7, 3, 8, 2, 9, 5, 1, 2, 2, 1, 7, 3, 5, 4, 3, 1, 7, 2, 4, 1, 2);
+var taxFree = new Array(false, false, true, false, false, false, true, false, false, false, true, false, false, false, false, true, false, false, false, 
+	false, false, false, false, false, true, true, false, false, false, false, false, false);
+var taxRate = 0.1; // 세율 = 10%
+var totalSum = 0; // 과세 상품 가격의 합
+var taxFreeSum = 0; // 면세 상품 가격의 합
+
+// 과세 상품과 면세 상품의 합계 금액 구하기
+for (var i=0; i< itemName.length; i++) {
+	if (taxFree[i])	{	// 면세 상품이라면
+		taxFreeSum += price[i] * amount[i];
+	} else { // 과세 상품이라면
+		totalSum += price[i] * amount[i];
+	}
+}
+
+var netPrice = parseInt(totalSum / (1+taxRate)); // 세전금액 계산
+var taxPrice = netPrice * taxRate; // 부가세 계산
+
+// 부가세 올림처리 
+var totalTaxPrice = 0;
+if (taxPrice == parseInt(taxPrice)) { // 부가세에 소수점 없으면
+	totalTaxPrice = taxPrice;
+} else { // 부가세에 소수점 있으면
+	totalTaxPrice = parseInt(taxPrice + 1);
+}
+
+// 오늘 날짜 구하기
+var today = new Date(); // Date 객체를 이용해 현재 날짜 구하기
+
+var year = today.getFullYear(); // 년도
+var month = ('0' + (today.getMonth() + 1)).slice(-2); // 월
+var day = ('0' + today.getDate()).slice(-2); // 일
+var hour = ('0' + today.getHours()).slice(-2); // 시
+var minute = ('0' + today.getMinutes()).slice(-2); // 분
+var second = today.getSeconds(); // 초
+var dateString1 = year + '-' + month  + '-' + day + ' ' + hour + ':' + minute; // 날짜 출력 양식 지정하기
+var dateString2 = year + '-' + month  + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+var dataString3 = year + month + day;
+
+
+// 아이템 이름의 길이를 세서 자르는 함수
+function printItemName(str) {
+	var cntByte = 0;
+	var charArr = str.split(''); // 인자로 받은 문자열을 하나씩 잘라서 배열로 만들기
+	var finalName = "";
+	
+	for (var i=0; i<charArr.length; i++) {
+		if (charArr[i] >= 'A' && charArr[i] <= 'z') { // 인덱스값이 영어이면
+			cntByte += 1; // 1바이트 더함
+		} else if (charArr[i] >= '\uAC00' && charArr[i] <= '\uD7A3') { // 인덱스값이 한글이면
+			cntByte += 2; // 2바이트 더함
+		} else {
+			cntByte += 1;
+		}
+		
+		finalName += charArr[i] // 최종 출력 품목명에 한글자씩 더하기
+		
+		if (cntByte > 15) {
+			if (charArr[i] >= '\uAC00' && charArr[i] <= '\uD7A3') { // 마지막 글자가 한글이면
+				finalName += " "; // 공백 더함
+				break; // 반복문에서 나가기
+			}
+		}
+		
+		if (cntByte == 15) { // 15바이트면
+			break; // 반복문에서 나가기
+		}
+	}
+	
+	return finalName;
+}
+
+function printHead() {
+	document.write("<TABLE border=0 width=340 cellspacing=0 cellpadding=0>");
+	document.write("<tr height='10'>");
+	document.write("<td rowspan=3 align=center><font size=6><b>emart</b></font></td>");
+	document.write("<td colspan=2 width=70%><font size=2>이마트 죽전점 (031)888-1234</font></td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td colspan=2><font size=2>206-86-50913 강희석</font></td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td colspan=2><font size=2>용인 수지구 포은대로 552</font></td>");
+	document.write("</tr>");
+	
+	document.write("<tr height='10'>");
+	document.write("<td colspan=3>영수증 미지참시 교환/환불 불가</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td colspan=3>정상제품에 한함, 30일 이내(신선 7일)</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td colspan=3>*일부 브랜드맺아 제외(매장 고지물참조)</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td colspan=3>교환/환불 구매점에서 가능(결제카드 지참)</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td colspan=3></td>");
+	document.write("</tr>");
+	document.write("</table>");
+
+	document.write("<TABLE border=0 width=340 cellspacing=0 cellpadding=0>");
+	document.write("<tr height='10'>");
+	document.write("<td align=left>[구 매]" + dateString1 + "</td>");
+	document.write("<td align=right>POS:0011-9861</td>");
+	document.write("</tr>");
+	document.write("</table>");
+}
+
+function printBody() {
+	document.write("<TABLE border=0 width=345 cellspacing=0 cellpadding=0>");
+	document.write("<tr height='10'>");
+	document.write("<td colspan=5>-------------------------------------------</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<th width=10>*</th>");
+	document.write("<th align=left>상 품 명</th>");
+	document.write("<th>단 가</th>");
+	document.write("<th>수량</th>");
+	document.write("<th align=right>금 액</th>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td colspan=5>-------------------------------------------</td>");
+	document.write("</tr>");
+	
+	
+	for (var i=0; i<itemName.length; i++) {
+		var name = printItemName(itemName[i]); // 함수 호출해서 품목명 가져오기
+		var totalPrice = price[i]*amount[i];
+		if ((i != 0) && (i % 5 == 0)) { // 품목 5개마다 점선을 표시하기 위한 조건문
+			document.write("<tr height='10'>");
+			document.write("<td colspan=5>-------------------------------------------</td>");
+			document.write("</tr>");
+		}
+		
+		document.write("<tr height='10'>");
+		if (taxFree[i]) {
+			document.write("<th>*</th>");
+		} else {
+			document.write("<th></th>");
+		}
+		document.write("<td align=left>" + name + "</td>");
+		document.write("<td align=right>" + price[i].toLocaleString() + "</td>");
+		document.write("<td align=right>" + amount[i] + "</td>");
+		document.write("<td align=right width=90>" + totalPrice.toLocaleString() + "</td>");
+		document.write("</tr>");
+	}
+	document.write("</table>");
+}
+
+function printTail() {
+	var totalPrice = totalSum + taxFreeSum; // 최종 금액 : 과세+면세가격의 합
+	document.write("<TABLE border=0 width=345 cellspacing=0 cellpadding=0>");
+	document.write("<tr height='20'>");
+	document.write("<td width=217></td>");
+	document.write("<td align=right></td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=right>총 품목 수량</td>");
+	document.write("<td align=right>" + itemName.length + "</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=right>(*)면&nbsp;세&nbsp;&nbsp;물&nbsp;품</td>");
+	document.write("<td align=right>" + taxFreeSum.toLocaleString() + "</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=right>과&nbsp;세&nbsp;&nbsp;물&nbsp;품</td>");
+	document.write("<td align=right>" + netPrice.toLocaleString() + "</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=right>부&nbsp;&nbsp;&nbsp;가&nbsp;&nbsp;&nbsp;세</td>");
+	document.write("<td align=right>" + totalTaxPrice.toLocaleString() + "</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=right>합&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;계</td>");
+	document.write("<td align=right>" + totalPrice.toLocaleString() + "</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=left>결 제 대 상 금 액</td>");
+	document.write("<td align=right>" + totalPrice.toLocaleString() + "</td>");
+	document.write("</tr>");
+	
+	document.write("<tr height='10'>");
+	document.write("<td colspan=5>-------------------------------------------</td>");
+	document.write("</tr>");
+	document.write("</table>");
+	
+	document.write("<TABLE border=0 width=345 cellspacing=0 cellpadding=0>");
+	document.write("<tr height='10'>");
+	document.write("<td align=left>0012 KEB 하나</td>");
+	document.write("<td align=right colspan=2>541707**0484/35860658</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=left>카드결제(IC)</td>");
+	document.write("<td align=right colspan=2>일시불&nbsp;/&nbsp;" + totalPrice.toLocaleString() +"</td>");
+	document.write("</tr>");
+	
+	document.write("<tr height='10'>");
+	document.write("<td colspan=5>-------------------------------------------</td>");
+	document.write("</tr>");
+	
+	document.write("<tr height='10'>");
+	document.write("<td align=center colspan=3>[신세계포인트 적립]</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=left colspan=3>홍*두 고객님의 포인트 현황입니다.</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=left>금회발생포인트</td>");
+	var addPoint = parseInt(totalPrice/1000); // 금회 발생 포인트 구하기
+	var oriPoint = 5473; // 기존 포인트 저장
+	var totalPoint = addPoint + oriPoint;
+	document.write("<td align=right colspan=2>9350**9995&nbsp;&nbsp;" + addPoint.toLocaleString() +"</td>");
+	document.write("</tr>");
+	document.write("<td align=left>누계(가용)포인트</td>");
+	document.write("<td align=right>" + totalPoint.toLocaleString() +"(&nbsp;&nbsp;" + oriPoint.toLocaleString() + ")</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=left colspan=3>*신세계포인트 유효기간은 2년입니다.</td>");
+	document.write("</tr>");
+	
+	document.write("<tr height='10'>");
+	document.write("<td colspan=5>-------------------------------------------</td>");
+	document.write("</tr>");
+	
+	document.write("<tr height='10'>");
+	document.write("<td align=center colspan=3>구매금액기준 무료주차시간 자동부여</td>");
+	document.write("</tr>");
+	document.write("<td align=left>차량번호 :</td>");
+	document.write("<td align=right>34저****</td>");
+	document.write("</tr>");
+	document.write("<td align=left>입차시간 :</td>");
+	document.write("<td align=right colspan=2>" + dateString2 + "</td>");
+	document.write("</tr>");
+	
+	document.write("<tr height='10'>");
+	document.write("<td colspan=5>-------------------------------------------</td>");
+	document.write("</tr>");
+	
+	document.write("<td align=left>캐셔:084599 양00</td>");
+	document.write("<td align=right colspan=2>1150</td>");
+	document.write("</tr>");
+	document.write("<tr height='10'>");
+	document.write("<td align=center colspan=3>" + dataString3 +"/00119861/00164980/31</td>");
+	document.write("</tr>");
+}
+
+printHead();
+printBody();
+printTail();
+</script>
+</head>
+<body>
+</body>
+</html>
