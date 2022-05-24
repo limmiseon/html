@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChartNew</title>
+	<!-- 사용하고자 하는 차트의 src 주소 입력 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script> 
+</head>
+<body>
+	<!-- canvas 태그를 이용해 차트를 그릴 영역 지정 -->
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script>
+		<!-- 데이터 값을 0~100까지의 정수로 설정 -->
+        data1 = parseInt(Math.random() * 99 +1);
+        data2 = parseInt(Math.random() * 99 +1);
+        data3 = parseInt(Math.random() * 99 +1);
+        data4 = parseInt(Math.random() * 99 +1);
+        data5 = parseInt(Math.random() * 99 +1);
+        data6 = parseInt(Math.random() * 99 +1);
+        data7 = parseInt(Math.random() * 99 +1);
+        data8 = parseInt(Math.random() * 99 +1);
+        data9 = parseInt(Math.random() * 99 +1);
+        data10 = parseInt(Math.random() * 99 +1);
+        data11 = parseInt(Math.random() * 99 +1);
+        data12 = parseInt(Math.random() * 99 +1);
+        data13 = parseInt(Math.random() * 99 +1);
+        data14 = parseInt(Math.random() * 99 +1);
+        data15 = parseInt(Math.random() * 99 +1);
+        data16 = parseInt(Math.random() * 99 +1);
+        data17 = parseInt(Math.random() * 99 +1);
+        data18 = parseInt(Math.random() * 99 +1);
+        data19 = parseInt(Math.random() * 99 +1);
+        data20 = parseInt(Math.random() * 99 +1);
+		
+		<!-- 차트를 그릴 영역을 dom 요소로 가져온다. -->
+        var ctx = document.getElementById("myChart").getContext('2d');
+		<!-- 차트를 생성한다. -->
+        var myChart = new Chart(ctx, {
+            type: 'bar', <!-- 차트의 종류 설정 -->
+            data: { <!-- 차트의 데이터 설정 -->
+				<!-- x축에 들어갈 이름들(Array) -->
+                labels: ["student1", "student2", "student3", "student4", "student5", "student6", "student7","student8", "student9", "student10",
+                "student11", "student12", "student13", "student14", "student15", "student16", "student17","student18", "student19", "student20"],
+                <!-- 실제 차트에 표시할 데이터들(Array), dataset객체들을 담고 있다. -->
+				datasets: [{
+                    label: 'score', <!-- dataset의 이름 -->
+					<!-- dataset의 값(Array) -->
+                    data: [data1, data2, data3, data4, data5, data6, data7, data8, data9, data10,
+                    data11, data12, data13, data14, data15, data16, data17, data18, data19, data20],
+                    <!-- dataset의 배경색(rgba값을 string으로 표현) -->
+					backgroundColor: [
+                        'rgba(251, 147, 175, 0.7)',
+                        'rgba(242, 252, 177, 0.7)',
+                        'rgba(147, 251, 216, 0.7)',
+                        'rgba(199, 147, 251, 0.7)',
+                        'rgba(249, 158, 113, 0.7)',
+                        'rgba(113, 192, 249, 0.7)',
+                        'rgba(249, 113, 113, 0.7)',
+                        'rgba(177, 234, 252, 0.7)',
+                        'rgba(84, 160, 248, 0.7)',
+                        'rgba(199, 177, 252, 0.7)',
+						'rgba(251, 147, 175, 0.7)',
+                        'rgba(249, 251, 147, 0.7)',
+                        'rgba(147, 251, 216, 0.7)',
+                        'rgba(199, 147, 251, 0.7)',
+                        'rgba(249, 158, 113, 0.7)',
+                        'rgba(113, 192, 249, 0.7)',
+                        'rgba(177, 234, 252, 0.7)',
+                        'rgba(242, 252, 177, 0.7)',
+                        'rgba(251, 147, 175, 0.7)',
+                        'rgba(199, 177, 252, 0.7)'
+                    ],
+					<!-- dataset의 선 색(rgba값을 string으로 표현) -->
+                    borderColor: [
+                        'rgba(251, 147, 175, 1)',
+                        'rgba(242, 252, 177, 1)',
+                        'rgba(147, 251, 216, 1)',
+                        'rgba(199, 147, 251, 1)',
+                        'rgba(249, 158, 113, 1)',
+                        'rgba(113, 192, 249, 1)',
+                        'rgba(249, 113, 113, 1)',
+                        'rgba(177, 234, 252, 1)',
+                        'rgba(84, 160, 248, 1)',
+                        'rgba(199, 177, 252, 1)',
+						'rgba(251, 147, 175, 1)',
+                        'rgba(249, 251, 147, 1)',
+                        'rgba(147, 251, 216, 1)',
+                        'rgba(199, 147, 251, 1)',
+                        'rgba(249, 158, 113, 1)',
+                        'rgba(113, 192, 249, 1)',
+                        'rgba(177, 234, 252, 1)',
+                        'rgba(242, 252, 177, 1)',
+                        'rgba(251, 147, 175, 1)',
+                        'rgba(199, 177, 252, 1)'
+                    ],
+                    borderWidth: 2 <!-- dataset의 테두리 선 두께(Number) -->
+                }]
+            },
+            options: { <!-- 차트의 설정(object) -->
+                scales: { <!-- 축에 관한 설정(object) -->
+                    yAxes: [{ <!-- y축에 대한 설정(object) -->
+                        ticks: { <!-- 시작을 0부터 하도록 설정(최소값이 0보다 크더라도)(boolean) -->
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</body>
+</html>
