@@ -51,9 +51,10 @@
       /* 글자 상하 지정 */
     	vertical-align: top;
     }
-
-    .imgAlign {
-      align: center;
+    
+    #preview {
+    	width: 300px;
+    	height: 200px;
     }
   </style>
   <script>
@@ -61,12 +62,20 @@
       fm.action = "write.jsp";
       fm.submit();
     }
+  	
+  	function readURL(input) {
+  	  if (input.files && input.files[0]) {
+  	    var reader = new FileReader();
+  	    reader.onload = function(e) {
+  	      document.getElementById('preview').src = e.target.result;
+  	    };
+  	    reader.readAsDataURL(input.files[0]);
+  	  } else {
+  	    document.getElementById('preview').src = "";
+  	  }
+  	}
   </script>
 	<%
-	Class.forName("com.mysql.cj.jdbc.Driver");
-	Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.93:3308/kopoctc", "root", "kopo34");
-	Statement stmt = conn.createStatement();
-	
 	Date nowTime = new Date();
 	SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 	%>
@@ -78,7 +87,7 @@
 			<form method="post" name="fm" enctype="multipart/form-data">
 				<table class="productTable">
 					<tr>
-						<td>상품 번호</td>
+						<td width=200>상품 번호</td>
 						<td><input type="text" name="id" size="20"></td>
 					</tr>
 					<tr>
@@ -103,7 +112,10 @@
 					</tr>
 					<tr>
 						<td class=imgText>상품 사진</td>
-						<td><input type="file" accept="image/*" name="imgFile"></td>
+						<td>
+							<img id="preview"/>
+							<input type="file" accept="image/*" name="imgFile" onchange="readURL(this);" />
+						</td>
 					</tr>
 				</table>
 			</form>
@@ -117,6 +129,5 @@
 			</table>
 		</div>
 	</div>
-
 </body>
 </html>

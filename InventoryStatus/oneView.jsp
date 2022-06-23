@@ -53,6 +53,11 @@
     .imgAlign {
       align: center;
     }
+    
+    .imgFile {
+    	width: 300px;
+    	height: 200px;
+    }
   </style>
   <div class="container">
     <div id=header>
@@ -67,7 +72,9 @@
         
         String id = request.getParameter("key");
         ResultSet rs = stmt.executeQuery("SELECT * FROM InventoryStatus WHERE id = " + id);
+       	String title = "";
         while (rs.next()) {
+        	title = rs.getString(2);
           out.println("<tr>");
           out.println("<td width=150>상품 번호</td>");
           out.println("<td>" + rs.getInt(1) + "</td>");
@@ -97,19 +104,20 @@
           out.println("<td width=150>상품 설명</td>");
           out.println("<td>" + rs.getString(6) + "</td>");
           out.println("</tr>");
-
           out.println("<tr>");
           out.println("<td class=imgText>상품 사진</td>");
-          out.println("<td class=imgText>" + rs.getString(7) + "</td>");
+          out.println("<td><img class='imgFile' src='/InventoryStatus/imgFiles/" +
+          rs.getString(7) + "' onerror=\"this.style.display='none';\"/></td>");
           out.println("</tr>");
+          
         }
       %>
     </table>
     <table class="regButton">
     	<tr>
     		<td width=430></td>
-    		<td><input type="button" value="상품 삭제" OnClick="window.location='insert.jsp'"></td>
-    		<td><input type="button" value="재고 수정" OnClick="window.location='insert.jsp'"></td>
+    		<td><input type="button" value="상품 삭제" OnClick="window.location='delete.jsp?key=<%=id%>'"></td>
+    		<td><input type="button" value="재고 수정" OnClick="window.location='modify.jsp?key=<%=id%>'"></td>
     	</tr>
     </table>
 </body>

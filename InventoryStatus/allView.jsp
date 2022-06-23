@@ -64,18 +64,14 @@
           <td width=70>상품 등록일</td>
         </tr>
         <%
-			    String sql = "SELECT * FROM InventoryStatus as a limit 21,20;";
+			    String sql = "SELECT * FROM InventoryStatus as a limit 0,20;";
 			    Class.forName("com.mysql.cj.jdbc.Driver"); // 드라이버 로드
 			    Connection conn = DriverManager.getConnection("jdbc:mysql://192.168.23.93:3308/kopoctc", "root", "kopo34");
 					Statement stmt = conn.createStatement();
     	
 		    	ResultSet rs = stmt.executeQuery(sql);
 		    	
-		    	// 한ㅂ너 돌때마다 보드아이템 하나 만ㄷㄺ
-// 		    	List<BoardItem> boardItems = new ArrayList<BoardItem>();
 					while (rs.next()) {
-// 						BoardItem boardItem = new BoardItem();
-// 						boardItem.setTitle(rs.getString(1));
 						out.println("<tr>");
 						out.println("<td width=50><a href='oneView.jsp?key=" + rs.getInt(1) + "'>" + rs.getInt(1) + "</a></td>");
 						out.println("<td width=70><a href='oneView.jsp?key=" + rs.getInt(1) + "'>" + rs.getString(2) + "</a></td>");
@@ -83,7 +79,6 @@
 						out.println("<td width=70>" + rs.getString(4) + "</td>");
 						out.println("<td width=70>" + rs.getString(5) + "</td>");
 						out.println("</tr>");
-// 						boardItems.add(boardItem);
 					}
 		    %>
       </table>

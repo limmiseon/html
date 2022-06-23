@@ -28,13 +28,7 @@
 		
 		request.setCharacterEncoding("UTF-8"); // 한글 처리
 		
-		stmt.execute("INSERT INTO InventoryStatus (id, p_name, p_inStock, p_invenReg, p_stockReg, p_content) values(" +
-
-		multi.getParameter("id") + ", '" +
-		multi.getParameter("name") + "', " +
-		multi.getParameter("inStock") +", date(now()), date(now()), '" +
-		multi.getParameter("content") + "');");
-		
+		String p_imagePath = "";
 		try {
 			Enumeration files = multi.getFileNames();
 		
@@ -51,12 +45,20 @@
 				if (f1.exists()) {
 					File newFile = new File(absolutePath + "\\" + multi.getParameter("id") + fileExtension); // 새로운 파일 객체 생성
 					boolean rsltt = f1.renameTo(newFile);  //원하는 파일명으로 변경.
-					System.out.println("f1 출력 : " + f1);
+					p_imagePath = multi.getParameter("id") + fileExtension; // DB에 저장될 이미지 이름(id와 확장자명)
 				}
 			}
 		} catch (Exception e) {
 				System.out.println("파일 없음" + e.getLocalizedMessage());
 		}
+		
+		stmt.execute("INSERT INTO InventoryStatus (id, p_name, p_inStock, p_invenReg, p_stockReg, p_content, p_imagePath) values(" +
+
+		multi.getParameter("id") + ", '" +
+		multi.getParameter("name") + "', " +
+		multi.getParameter("inStock") +", date(now()), date(now()), '" +
+		multi.getParameter("content") + "', '" +
+		p_imagePath + "');");
 
 
 		stmt.close();
